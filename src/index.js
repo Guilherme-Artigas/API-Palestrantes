@@ -15,6 +15,10 @@ app.get('/', (_request, response) => {
 // Requisito 1
 app.use('/talker', talkerRouters);
 
+// Requisito 2
+
+app.use('/talker', talkerRouters);
+
 app.listen(PORT, () => {
   console.log('Online');
 });
