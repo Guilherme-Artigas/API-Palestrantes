@@ -1,4 +1,5 @@
 const { readFile, writeFile } = require('fs').promises;
+const crypto = require('crypto');
 const path = require('path');
 
 const caminho = path.resolve(__dirname, '../talker.json');
@@ -23,7 +24,10 @@ const escrita = async (payload) => {
   }
 };
 
+const generateToken = () => crypto.randomBytes(8).toString('hex');
+
 module.exports = {
   leitura,
   escrita,
+  generateToken,
 };
