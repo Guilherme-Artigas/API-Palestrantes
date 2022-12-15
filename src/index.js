@@ -1,5 +1,5 @@
 const express = require('express');
-const talkerRouters = require('./routes/talkerRoutes');
+const talkerRoutes = require('./routes/talkerRoutes');
 const loginRoutes = require('./routes/loginRoutes');
 
 const app = express();
@@ -14,13 +14,16 @@ app.get('/', (_request, response) => {
 });
 
 // Requisito 1
-app.use('/talker', talkerRouters);
+app.use('/talker', talkerRoutes);
 
 // Requisito 2
-app.use('/talker', talkerRouters);
+app.use('/talker', talkerRoutes);
 
-// Requisito 3
+// Requisito 3, 4 (criação e validação da rota).
 app.use('/login', loginRoutes);
+
+// Requisito 5
+app.use('/talker', talkerRoutes);
 
 app.listen(PORT, () => {
   console.log('Online');

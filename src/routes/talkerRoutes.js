@@ -1,5 +1,13 @@
 const { Router } = require('express');
-const { leitura } = require('../fsUtils');
+const { leitura, escrita } = require('../fsUtils');
+const {
+  validateAuth,
+  validateName,
+  validateAge,
+  validateTalker,
+  validateDate,
+  validateRate,
+} = require('../middlewares/validateRegistration');
 
 const router = Router();
 
@@ -25,5 +33,28 @@ router.get('/:id', async (req, res) => {
     return res.status(500).send(`Algo deu errado na rota GET /talker/:id: ${erro.message}`);
   }
 });
+
+router.post(
+  '/',
+  validateAuth,
+  validateName,
+  validateAge,
+  validateTalker,
+  validateDate,
+  validateRate,
+  async (req, res) => {
+    try {
+      const payload = req.body;
+      const oldList = await leitura();
+      const lastId = oldList.find((_talk, index, arr) => index === arr.length - 1).id;
+      const nextId = lastId + 1;
+      const newList = { id: nextId, ...payload };
+      await escrita(oldList.concat(newList));
+      return res.status(201).json({ ...newList });
+    } catch (erro) {
+      return res.status(500).send(`Algo deu errado na rota POST /talker: ${erro.message}`);
+    }
+  },
+);
 
 module.exports = router;
