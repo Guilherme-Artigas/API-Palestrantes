@@ -84,4 +84,20 @@ router.put(
   },
 );
 
+router.delete(
+  '/:id',
+  validateAuth,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const oldList = await leitura();
+      const updateList = oldList.filter((talk) => talk.id !== Number(id));
+      await escrita([...updateList]);
+      return res.status(204).send();
+    } catch (erro) {
+      return res.status(500).send(`Algo deu errado na rota DELETE /talker/:id: ${erro.message}`);
+    }
+  },
+);
+
 module.exports = router;
