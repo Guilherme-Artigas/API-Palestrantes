@@ -11,9 +11,24 @@ const {
 
 const router = Router();
 
+router.get(
+  '/search',
+  validateAuth,
+  async (req, res) => {
+    try {
+      const { q } = req.query;
+      const talkList = await leitura();
+      const list = talkList.filter((talk) => talk.name.includes(q));
+      return res.status(200).json(list);
+    } catch (erro) {
+      return res.status(500).send(`Algo deu errado na rota GET /talker/search: ${erro.message}`);
+    }
+  },
+);
+
 router.get('/', async (_req, res) => {
   try {
-    const data = await leitura(); // Passando parâmetro "true" para a função ela retorna no formato de JSON.
+    const data = await leitura();
     return res.status(200).json(data);
   } catch (erro) {
     return res.status(500).send(`Algo deu errado na rota GET talker: ${erro.message}`);
