@@ -57,4 +57,31 @@ router.post(
   },
 );
 
+router.put(
+  '/:id',
+  validateAuth,
+  validateName,
+  validateAge,
+  validateTalker,
+  validateDate,
+  validateRate,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const payload = req.body;
+      const oldList = await leitura();
+      const oldTalk = oldList.find((talk) => talk.id === Number(id));
+      const newTalk = { id: oldTalk.id, ...payload };
+      const updateList = oldList.map((talk) => {
+        if (talk.id === Number(id)) return newTalk;
+        return talk;
+      });
+      await escrita([...updateList]);
+      return res.status(200).json(newTalk);
+    } catch (erro) {
+      return res.status(500).send(`Algo deu errado na rota PUT /talker/:id: ${erro.message}`);
+    }
+  },
+);
+
 module.exports = router;
