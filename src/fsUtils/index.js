@@ -2,7 +2,7 @@ const { readFile, writeFile } = require('fs').promises;
 const crypto = require('crypto');
 const path = require('path');
 
-const caminho = path.resolve(__dirname, '../talker.json');
+const caminho = path.resolve(__dirname, '../data/talker.json');
 
 const leitura = async () => {
   try {
